@@ -1,0 +1,16 @@
+FROM golang:1.21.1-alpine as bd
+
+WORKDIR /app
+
+copy . .
+
+RUN go build -o /main main.go
+
+FROM scratch
+
+WORKDIR /
+COPY --from=bd /main /main
+
+EXPOSE 8080
+
+ENTRYPOINT [ "/main" ]
